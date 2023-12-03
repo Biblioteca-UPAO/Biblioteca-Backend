@@ -14,6 +14,13 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Clase de pruebas unitarias para AutorService.
+ * Utiliza Mockito para simular las interacciones con AutorRepository.
+ * @author Jhoel Maqui & James Huaman
+ * @version 1.0
+ */
+
 @SpringBootTest
 public class AutorServiceTest {
 
@@ -22,6 +29,11 @@ public class AutorServiceTest {
 
     @InjectMocks
     private AutorService autorService;
+
+    /**
+     * Prueba la búsqueda de autores por nombre cuando el autor existe.
+     * Verifica que el resultado sea presente y corresponda al autor buscado.
+     */
 
     @Test
     //buscarPorNombre
@@ -43,6 +55,11 @@ public class AutorServiceTest {
 
     }
 
+    /**
+     * Prueba la búsqueda de autores por nombre cuando el autor no existe.
+     * Verifica que el resultado sea vacío.
+     */
+
     @Test
     public void cuandoBuscaPorNombreInexistente_retornaVacio() {
 
@@ -53,6 +70,11 @@ public class AutorServiceTest {
         assertFalse(resultado.isPresent());
 
     }
+
+    /**
+     * Prueba el guardado de un autor.
+     * Verifica que el autor guardado sea retornado y sus datos sean correctos.
+     */
 
     @Test
     //guardarAutor
@@ -72,4 +94,6 @@ public class AutorServiceTest {
         assertNotNull(resultado);
         assertEquals("Nombre Autor", resultado.getNombre());
     }
+
+
 }

@@ -14,12 +14,26 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
 
+/**
+ * Configuración de seguridad de la aplicación.
+ * Define la cadena de filtros de seguridad y las reglas para la autenticación y autorización de solicitudes HTTP.
+ */
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authProvider;
+
+    /**
+     * Define y configura la cadena de filtros de seguridad.
+     * Incluye configuraciones para CORS, CSRF, reglas de autorización y manejo de sesiones.
+     *
+     * @param http Objeto HttpSecurity para configurar aspectos de seguridad HTTP.
+     * @return SecurityFilterChain configurado.
+     * @throws Exception En caso de errores durante la configuración.
+     */
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -33,6 +47,8 @@ public class SecurityConfig {
             return configuration;
         }));
         //Cross-site request forgery (CSRF)
+        // Deshabilitación de CSRF para evitar ataques de falsificación de solicitudes en sitios cruzados.
+        // CSRF no es necesario con tokens JWT que se usan para la autenticación.
         return http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequest ->
                         authRequest

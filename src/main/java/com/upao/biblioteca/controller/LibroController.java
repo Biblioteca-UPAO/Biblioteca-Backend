@@ -27,6 +27,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
 
+/**
+ * Controlador REST para operaciones relacionadas con libros.
+ * Proporciona endpoints para listar, crear y actualizar información de libros.
+ * Utiliza {@link LibroService} y {@link AutorService} para realizar operaciones de negocio.
+ */
+
 @RestController
 @RequestMapping("/libro")
 @CrossOrigin("*")
@@ -41,6 +47,13 @@ public class LibroController {
     public static String uploadDirectory =
             System.getProperty("user.dir") + "/src/main/resources/static/images";
 
+    /**
+     * Lista los libros disponibles en el catálogo.
+     *
+     * @param pageable Configuración de paginación para la lista de libros.
+     * @return Una página de libros con datos reducidos para listados.
+     */
+
     @GetMapping("catalogo-existente")
     public ResponseEntity<Page<DatosListadoLibro>> listarLibros(@PageableDefault(size = 8) Pageable pageable) {
        Page<DatosListadoLibro> page = libroService.obtenerLibros(pageable)
@@ -53,6 +66,17 @@ public class LibroController {
                ));
        return ResponseEntity.ok(page);
     }
+
+    /**
+     * Crea un nuevo libro y lo agrega al catálogo.
+     *
+     * @param datosRegistroLibro DTO con los datos del libro a crear.
+     * @param uriComponentsBuilder Constructor de URI para la respuesta.
+     * @param file Archivo de imagen representando la portada del libro.
+     * @return Una ResponseEntity con la información del libro creado.
+     * @throws IOException Si ocurre un error al guardar la imagen de la portada.
+     * @throws ResponseStatusException Si no se encuentra el autor especificado.
+     */
 
     @PostMapping("/crear-libro")
     @Transactional

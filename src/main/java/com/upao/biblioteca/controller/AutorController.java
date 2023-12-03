@@ -15,6 +15,14 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Controlador REST para operaciones relacionadas con autores.
+ * Proporciona endpoints para crear y buscar autores en la base de datos.
+ * Utiliza {@link AutorService} para realizar operaciones de negocio.
+ * @author Jhoel Maqui & James Huaman
+ * @version 1.0
+ */
+
 @RestController
 @RequestMapping("/autor")
 @CrossOrigin("*")
@@ -22,6 +30,14 @@ import java.time.format.DateTimeParseException;
 public class AutorController {
     @Autowired
     private final AutorService autorService;
+
+    /**
+     * Crea un nuevo autor y lo guarda en la base de datos.
+     *
+     * @param datosRegistroAutor DTO con los datos del autor a crear.
+     * @return Una ResponseEntity que contiene al autor creado.
+     * @throws ResponseStatusException Si el formato de la fecha es inválido.
+     */
 
     @PostMapping("/crear-autor")
     public ResponseEntity<Autor> agregarAutor(@RequestBody DatosRegistroAutor datosRegistroAutor) {
@@ -42,6 +58,14 @@ public class AutorController {
         Autor autorGuardado = autorService.guardarAutor(autor);
         return ResponseEntity.ok(autorGuardado);
     }
+
+    /**
+     * Busca un autor por su nombre.
+     *
+     * @param nombre El nombre del autor a buscar.
+     * @return Una ResponseEntity que contiene al autor encontrado.
+     * @throws ResponseStatusException Si no se encuentra al autor.
+     */
 
     @GetMapping("/{nombre}")
     public ResponseEntity<Autor> buscarAutor(@PathVariable String nombre) {
