@@ -15,13 +15,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-
+/**
+ * Clase de pruebas para UsuarioService.
+ * Utiliza Mockito para simular interacciones con el repositorio de usuarios y otros servicios.
+ */
 
 @SpringBootTest
 class UsuarioServiceTest {
@@ -41,6 +43,9 @@ class UsuarioServiceTest {
     @InjectMocks
     private UsuarioService usuarioService;
 
+    /**
+     * Prueba el método de inicio de sesión para asegurar que retorne un token válido cuando las credenciales son correctas.
+     */
 
     @Test
     public void cuandoUsuarioSeLoguea_retornarToken() {
@@ -66,6 +71,10 @@ class UsuarioServiceTest {
         assertEquals("token_jwt_simulado", tokenResponse.getToken());
     }
 
+    /**
+     * Prueba el método de agregar un nuevo usuario para asegurar que retorne un token válido.
+     */
+
     @Test
     public void cuandoSeAgregaUnNuevoUsuario_retornarToken() {
         // Datos de prueba
@@ -88,6 +97,10 @@ class UsuarioServiceTest {
         assertNotNull(tokenResponse);
         assertEquals("token_jwt_nuevo_usuario", tokenResponse.getToken());
     }
+
+    /**
+     * Prueba el método de inicio de sesión para lanzar una excepción cuando las credenciales son inválidas.
+     */
 
     @Test
     public void cuandoCredencialesSonInvalidas_lanzarExcepcion() {

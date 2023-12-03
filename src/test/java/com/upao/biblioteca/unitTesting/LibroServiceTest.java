@@ -17,6 +17,11 @@ import java.util.Optional;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Clase de pruebas para LibroService.
+ * Utiliza Mockito para simular interacciones con el repositorio de libros.
+ */
+
 class LibroServiceTest {
 
     @Mock
@@ -24,6 +29,10 @@ class LibroServiceTest {
 
     @InjectMocks
     private LibroService libroService;
+
+    /**
+     * Prueba el método agregarLibro para asegurar que retorne el libro guardado.
+     */
 
     @Test
     void cuandoSeAgregaLibro_retornarLibroGuardado() {
@@ -42,6 +51,10 @@ class LibroServiceTest {
         assertEquals("Nuevo Libro", result.getTitulo());
     }
 
+    /**
+     * Prueba el método obtenerLibros para verificar que se devuelven libros disponibles.
+     */
+
     @Test
     void cuandoHayLibros_disponible() {
         // Configuración
@@ -58,6 +71,10 @@ class LibroServiceTest {
         verify(libroRepository).findAllByOrderByTituloAsc(pageable);
     }
 
+    /**
+     * Prueba el método agregarLibro para lanzar una excepción si el libro ya existe.
+     */
+
     @Test
     void cuandoLibroExiste_lanzarExcepcion() {
         // Configuración
@@ -69,6 +86,10 @@ class LibroServiceTest {
         // Ejecución y Verificación
         assertThrows(ResponseStatusException.class, () -> libroService.agregarLibro(libro));
     }
+
+    /**
+     * Prueba el método obtenerLibros para lanzar una excepción si no hay libros disponibles.
+     */
 
     @Test
     void cuandoNoHayLibros_lanzarExcepcion() {
