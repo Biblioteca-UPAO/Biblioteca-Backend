@@ -26,6 +26,7 @@ public class Solicitud {
     @ManyToOne
     @JoinColumn(name= "usuario_id")
     private Usuario usuario;
+    private LocalDate fechaRecojo;
 
     public void setFechaRecojo(LocalDate fechaRecojo) {
     }

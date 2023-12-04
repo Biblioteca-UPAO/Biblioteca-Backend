@@ -1,5 +1,6 @@
 package com.upao.biblioteca.controller;
 
+import com.upao.biblioteca.domain.dto.solicitudDTO.SolicitudDTO;
 import com.upao.biblioteca.domain.entity.Solicitud;
 import com.upao.biblioteca.domain.service.SolicitudService;
 import com.upao.biblioteca.infra.repository.LibroRepository;
@@ -52,8 +53,9 @@ public class SolicitudController {
         return new ResponseEntity<>(solicitudes, HttpStatus.OK);
     }
 
-    public ResponseEntity<List<Solicitud>> listarTodasLasSolicitudes() {
-        List<Solicitud> solicitudes = solicitudService.obtenerTodasLasSolicitudes();
+    @GetMapping("/listar-todas")
+    public ResponseEntity<List<SolicitudDTO>> listarTodasLasSolicitudes() {
+        List<SolicitudDTO> solicitudes = solicitudService.obtenerTodasLasSolicitudes();
         return ResponseEntity.ok(solicitudes);
     }
 }

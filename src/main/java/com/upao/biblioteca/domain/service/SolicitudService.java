@@ -1,5 +1,6 @@
 package com.upao.biblioteca.domain.service;
 
+import com.upao.biblioteca.domain.dto.solicitudDTO.SolicitudDTO;
 import com.upao.biblioteca.domain.entity.Libro;
 import com.upao.biblioteca.domain.entity.Solicitud;
 import com.upao.biblioteca.domain.entity.Usuario;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.stream.Collectors;
 @Service
 public class SolicitudService {
 
@@ -41,8 +43,6 @@ public class SolicitudService {
 
         //Fecha de recojo automáticamente a 7 días a partir de hoy
         LocalDate fechaRecojo = LocalDate.now().plus(7, ChronoUnit.DAYS);
-
-        // Asignar la fecha de recojo a la solicitud
         solicitud.setFechaRecojo(fechaRecojo);
 
         return solicitudRepository.save(solicitud);
@@ -71,7 +71,20 @@ public class SolicitudService {
         }
     }
 
-    public List<Solicitud> obtenerTodasLasSolicitudes() {
-        return solicitudRepository.findAll();
+    public List<SolicitudDTO> obtenerTodasLasSolicitudes() {
+        return solicitudRepository.findAll().stream()
+                .map(this::convertirASolicitudDTO)
+                .collect(Collectors.toList());
     }
+
+    private SolicitudDTO convertirASolicitudDTO(Solicitud solicitud) {
+        SolicitudDTO dto = new SolicitudDTO();
+        dto.setSolicitudId(solicitud.getSolicitudId());
+        dto.setFechaSolicitada(solicitud.getFechaSolicitada());
+        dto.setTituloLibro(solicitud.getLibro().getTitulo());
+        dto.setNombreUsuario(solicitud.getUsuario().getNombre());
+        return dto;
+    }
+
+
 }
