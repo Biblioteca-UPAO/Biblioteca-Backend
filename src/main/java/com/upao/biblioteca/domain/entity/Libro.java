@@ -26,4 +26,11 @@ public class Libro {
     @JoinColumn(name = "autor_id_fk")
     private Autor autor;
 
+    public void reservarLibro() {
+        this.estado = Estado.RESERVADO;
+    }
+
+    public void marcarNoDisponible() {
+        this.estado = Estado.NODISPONIBLE;
+    }
 }
