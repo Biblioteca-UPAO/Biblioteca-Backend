@@ -52,4 +52,8 @@ public class SolicitudController {
         return new ResponseEntity<>(solicitudes, HttpStatus.OK);
     }
 
+    public ResponseEntity<List<Solicitud>> listarTodasLasSolicitudes() {
+        List<Solicitud> solicitudes = solicitudService.obtenerTodasLasSolicitudes();
+        return ResponseEntity.ok(solicitudes);
+    }
 }

@@ -70,5 +70,8 @@ public class SolicitudService {
             throw new IllegalStateException("Ya existe una solicitud para este usuario y libro.");
         }
     }
-}
 
+    public List<Solicitud> obtenerTodasLasSolicitudes() {
+        return solicitudRepository.findAll();
+    }
+}
