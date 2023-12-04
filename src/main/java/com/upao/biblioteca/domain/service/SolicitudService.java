@@ -59,9 +59,9 @@ public class SolicitudService {
     }
 
     private void validarSolicitudDuplicada(Usuario usuario, Libro libro) {
-        // Puedes implementar lógica para evitar solicitudes duplicadas
         if (solicitudRepository.existsByUsuarioAndLibro(usuario, libro)) {
             throw new IllegalStateException("Ya existe una solicitud para este usuario y libro.");
         }
     }
 }
+

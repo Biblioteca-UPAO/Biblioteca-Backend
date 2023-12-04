@@ -1,12 +1,13 @@
 package com.upao.biblioteca.controller;
 
-import com.upao.biblioteca.domain.entity.Libro;
 import com.upao.biblioteca.domain.entity.Solicitud;
-import com.upao.biblioteca.domain.entity.Usuario;
+import com.upao.biblioteca.domain.service.SolicitudService;
 import com.upao.biblioteca.infra.repository.LibroRepository;
 import com.upao.biblioteca.infra.repository.SolicitudRepository;
 import com.upao.biblioteca.infra.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,22 +25,27 @@ public class SolicitudController {
     @Autowired
     private LibroRepository libroRepository;
 
-    @PostMapping("/Realizar-solicitud")
-    public Solicitud realizarSolicitud(@RequestParam Long usuarioId, @RequestParam Long libroId){
-        Usuario usuario = usuarioRepository.findById(usuarioId).orElseThrow();
-        Libro libro = libroRepository.findById(libroId).orElseThrow();
+    @Autowired
+    private final SolicitudService solicitudService;
 
-        Solicitud solicitud = new Solicitud();
-        solicitud.setUsuario(usuario);
-        solicitud.setLibro(libro);
-
-        return  solicitudRepository.save(solicitud);
+    public SolicitudController(SolicitudService solicitudService) {
+        this.solicitudService = solicitudService;
     }
 
-    @GetMapping("/Ver-solicitudes")
-    public List<Solicitud> verSolicitudes(){
-        return solicitudRepository.findAll();
+    @PostMapping("/realizar-solicitudes")
+    public ResponseEntity<Solicitud> realizarSolicitud(@RequestParam Long usuarioId, @RequestParam Long libroId) {
+        try {
+            Solicitud solicitud = solicitudService.realizarSolicitud(usuarioId, libroId);
+            return new ResponseEntity<>(solicitud, HttpStatus.CREATED);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
+    @GetMapping("/ver-solicitudes")
+    public ResponseEntity<List<Solicitud>> verSolicitudes() {
+        List<Solicitud> solicitudes = solicitudService.verSolicitudes();
+        return new ResponseEntity<>(solicitudes, HttpStatus.OK);
+    }
 
 }
