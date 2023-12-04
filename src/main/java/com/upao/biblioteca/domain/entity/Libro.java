@@ -33,4 +33,8 @@ public class Libro {
     public void marcarNoDisponible() {
         this.estado = Estado.NODISPONIBLE;
     }
+
+    public void marcarDisponible(){
+        this.estado = Estado.DISPONIBLE;
+    }
 }

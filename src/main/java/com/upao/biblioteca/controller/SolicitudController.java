@@ -48,13 +48,24 @@ public class SolicitudController {
         }
     }
 
-    @PutMapping("/realizarRecojo/{solicitudId}")
-    public ResponseEntity<?> realizarRecojo(@PathVariable Long solicitudId) {
+    @PutMapping("/realizarRecojo")
+    public ResponseEntity<String> realizarRecojo(@RequestParam Long solicitudId) {
         try {
             solicitudService.realizarRecojo(solicitudId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntity.ok("Recojo realizada con éxito");
         } catch (IllegalStateException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+    @PutMapping("/realizarDevolucion")
+    public ResponseEntity<String> realizarDevolucion(@RequestParam Long solicitudId) {
+        try {
+            solicitudService.actualizarDevolucion(solicitudId);
+            return ResponseEntity.ok("Devolución realizada con éxito");
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error interno del servidor");
         }
     }
 }

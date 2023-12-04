@@ -52,18 +52,10 @@ public class SolicitudService {
         solicitud.setFechaSolicitada(now);
 
         // Cambia el estado del libro a RESERVADO
-        libro.setEstado(Estado.RESERVADO);
-
+        solicitud.getLibro().reservarLibro();
         // Los demás campos se mantendrán como nulos por defecto
 
         return solicitudRepository.save(solicitud);
-    }
-
-    private void asignarFechasRecojoYMaxDevolucion(Solicitud solicitud) {
-        LocalDateTime now = LocalDateTime.now();
-        solicitud.setFechaRecojo(now);
-        LocalDateTime fechaMaxDevolucion = now.plus(7, ChronoUnit.DAYS);
-        solicitud.setFechaMaxDevolucion(fechaMaxDevolucion);
     }
 
     @Transactional
@@ -87,6 +79,25 @@ public class SolicitudService {
         }
     }
 
+    @Transactional
+    public void actualizarDevolucion(Long solicitudId) {
+        Optional<Solicitud> solicitudOpt = solicitudRepository.findById(solicitudId);
+        if (solicitudOpt.isPresent()) {
+            Solicitud solicitud = solicitudOpt.get();
+            if (solicitud.getFechaRecojo() == null) {
+                throw new IllegalStateException("La solicitud no ha sido recolectada previamente.");
+            }
+            LocalDateTime fechaDevolucion = LocalDateTime.now();
+            solicitud.setFechaDevolucion(fechaDevolucion);
+
+            // Cambiar el estado del libro a DISPONIBLE
+            solicitud.getLibro().marcarDisponible();
+
+            solicitudRepository.save(solicitud);
+        } else {
+            throw new IllegalArgumentException("Solicitud no encontrada con ID: " + solicitudId);
+        }
+    }
     public List<Solicitud> verSolicitudes() {
         return solicitudRepository.findAll();
     }
