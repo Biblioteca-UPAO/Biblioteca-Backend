@@ -32,7 +32,7 @@ public class SolicitudController {
         this.solicitudService = solicitudService;
     }
 
-    @PostMapping("/realizar-solicitudes")
+    @PostMapping("/realizar-solicitud")
     public ResponseEntity<Solicitud> realizarSolicitud(@RequestParam Long usuarioId, @RequestParam Long libroId) {
         try {
             Solicitud solicitud = solicitudService.realizarSolicitud(usuarioId, libroId);
@@ -43,8 +43,12 @@ public class SolicitudController {
     }
 
     @GetMapping("/ver-solicitudes")
-    public ResponseEntity<List<Solicitud>> verSolicitudes() {
+    public ResponseEntity<?> verSolicitudes() {
         List<Solicitud> solicitudes = solicitudService.verSolicitudes();
+
+        if (solicitudes.isEmpty()) {
+            return new ResponseEntity<>("Aún no se realiza ninguna solicitud", HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(solicitudes, HttpStatus.OK);
     }
 

@@ -9,9 +9,9 @@ import com.upao.biblioteca.infra.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
-
 @Service
 public class SolicitudService {
 
@@ -37,6 +37,13 @@ public class SolicitudService {
         Solicitud solicitud = new Solicitud();
         solicitud.setUsuario(usuario);
         solicitud.setLibro(libro);
+
+
+        //Fecha de recojo automáticamente a 7 días a partir de hoy
+        LocalDate fechaRecojo = LocalDate.now().plus(7, ChronoUnit.DAYS);
+
+        // Asignar la fecha de recojo a la solicitud
+        solicitud.setFechaRecojo(fechaRecojo);
 
         return solicitudRepository.save(solicitud);
     }
